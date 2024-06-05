@@ -1,4 +1,6 @@
 import './bootstrap.js';
+import './mdb.es.min.js';
+import './mdb.umd.min.js';
 /*
  * Welcome to your app's main JavaScript file!
  *

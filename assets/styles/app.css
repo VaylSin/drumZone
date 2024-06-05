@@ -1,5 +1,6 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css");
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+@import "mdb.min.css";
 
 header {
     background-image: url('/uploads/images/header_banner.jpg');
@@ -24,6 +25,10 @@ header {
         box-shadow: none;
     }
 }
+.section_container:not(:first-child) {
+    padding: 2rem 0;
+}
+
 .navbar .navbar-brand, .navbar .navbar-nav .nav-link {
   color: #ffffff;
 }

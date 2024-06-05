@@ -6,9 +6,10 @@
 {% block body %}
 <div class="row">
 {{ include('home/partials/_sidebar.html.twig') }}
+
 {% set count = 0 %}
 <main class="col-md-9 mainContent">
-    <div class="row highlight">
+    <div class="row highlight section_container">
         {% for item in highlight %}
             {{
                 include('home/components/highlight-product-card.html.twig',
@@ -16,7 +17,7 @@
             }}
         {% endfor %}
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 best-sells">
+    <div class="row row-cols-1 row-cols-md-3 g-4 best-sells section_container">
         {% for item in homeBestSellers %}
             {% set count = count + 1 %}
             {{
@@ -26,7 +27,7 @@
             }}
         {% endfor %}
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 best-sells">
+    <div class="row row-cols-1 row-cols-md-3 g-4 best-rates section_container">
         {% for item in homeRateProducts %}
             {% set count = count + 1 %}
             {{
@@ -35,16 +36,27 @@
             }}
         {% endfor %}
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 testimonials">
-        {# {% for item in testimonials %} #}
-            {{
-                include('home/components/testimonial-card.html.twig')}}
-                {#{{ include('home/components/product-card.html.twig',
-                {'item': item, 'count': count}) #}
-            {# }} #}
-        {# {% endfor %} #}
+    <div class="row testimonials section_container">
+        <h2 class="text-start">Nos clients témoignent</h2>
     </div>
-
+    <div id="carouselControls" data-mdb-carousel-init class="carousel slide text-center carousel-dark" data-mdb-ride="carousel">
+        <div class="carousel-inner">
+            {% for item in testimonials %}
+                {{include('home/components/testimonial-card.html.twig',
+                    {'item': item})}}
+            {% endfor %}
+        </div>
+        <button data-mdb-button-init class="carousel-control-prev" type="button" data-mdb-target="#carouselControls"
+            data-mdb-slide="prev">
+            <span class="carousel-control-prev-icon text-body" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button data-mdb-button-init class="carousel-control-next" type="button" data-mdb-target="#carouselControls"
+            data-mdb-slide="next">
+            <span class="carousel-control-next-icon text-body" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </main>
 </div>
 {% endblock %}

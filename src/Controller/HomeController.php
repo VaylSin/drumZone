@@ -12,20 +12,38 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController {
-    private $manager;
+    //TODO refaire le menu sidebar dans le template principal uniquement pour la home (aligment des produits et des catégories menu)
 
+    private $manager;
     public function __construct(EntityManagerInterface $manager) {
         $this->manager = $manager;
     }
 
     #[Route('/', name: 'app_home')]
-    public function homeDisplay(ProductRepository $productRepository, TestimonialRepository $testimonialRepository): Response {
+    #[Route('/menu/sidebar/{max}', name: 'app_menu_sidebar')]
+    public function homeDisplay(ProductRepository $productRepository,
+        TestimonialRepository $testimonialRepository,
+        CategoryRepository $categoryRepository,
+        $max): Response {
 
         $highlight = $productRepository->findBy(['lightOn' => true], ['createdAt' => 'DESC'], 2);
         $homeBestSellers = $productRepository->findProductsByBestSells(3);
         $homeRateProducts = $productRepository->findBestRateProducts(3);
         $testimonials = $testimonialRepository->findBy([], ['createdAt' => 'DESC'], 6);
 
-        return $this->render('home/index.html.twig', compact('highlight', 'homeBestSellers', 'homeRateProducts', 'testimonials'));
+        // export depuis le menuController pour la sidebar menu
+        $categories = $categoryRepository->findBy([], null, $max);
+        $bestSellers = $productRepository->findProductsByBestSells(5);
+        $bestRateProducts = $productRepository->findBestRateProducts(5);
+
+        return $this->render('home/index.html.twig',
+            compact('highlight',
+                'homeBestSellers',
+                'homeRateProducts',
+                'testimonials',
+                'categories',
+                'bestSellers',
+                'bestRateProducts'
+            ));
     }
 }
