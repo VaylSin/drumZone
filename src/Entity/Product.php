@@ -9,8 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
-{
+class Product {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -52,6 +51,9 @@ class Product
      */
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'products')]
     private Collection $tags;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1)]
+    private ?string $rate = null;
 
     public function __construct()
     {
@@ -203,6 +205,18 @@ class Product
     public function removeTag(Tag $tag): static
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getRate(): ?string
+    {
+        return $this->rate;
+    }
+
+    public function setRate(string $rate): static
+    {
+        $this->rate = $rate;
 
         return $this;
     }

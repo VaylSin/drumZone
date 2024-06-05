@@ -1,0 +1,14 @@
+<div class="col">
+    <div class="card h-100">
+        <img src="https://picsum.photos/200/200?grayscale&random={{ count }}" class="card-img-top p-3" alt="..." style="aspect-ratio:3/2">
+        <div class="card-body">
+
+            <h5 class="card-title">{{item.name|capitalize}}</h5>
+            <p class="card-text">{{item.description}}</p>
+        </div>
+        <div class="card-footer d-flex align-items-center py-2">
+            <small class="fw-bold">{{item.price}} €</small>
+            <a href="{{ path('app_product_show', {'id': item.id}) }}" class="btn btn-success ms-auto">Voir </a>
+        </div>
+    </div>
+</div>

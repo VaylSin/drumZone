@@ -2,6 +2,10 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
 header {
+    background-image: url('/uploads/images/header_banner.jpg');
+    padding: 5rem 0;
+    background-position: top;
+    background-size: cover;
     .form-control:focus {
         outline: 0;
         box-shadow: none;
@@ -11,6 +15,9 @@ header {
         &:last-child {
             margin-left: 1rem;
         }
+        &::before {
+            color: #ffffff;
+        }
     }
     .dropdown-toggle {
         outline: 0;
@@ -19,4 +26,10 @@ header {
 }
 .navbar .navbar-brand, .navbar .navbar-nav .nav-link {
   color: #ffffff;
+}
+.highlight-card {
+    background-color: #A3CFBB;
+}
+.category_block {
+    margin-bottom: 6rem;
 }

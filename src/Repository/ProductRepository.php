@@ -39,5 +39,22 @@ class ProductRepository extends ServiceEntityRepository
     //            ->getQuery()
     //            ->getOneOrNullResult()
     //        ;
-    //    }
+        public function findProductsByBestSells($nb): array {
+            return $this->createQueryBuilder('p')
+                ->where('p.stockQuantity >= :stock')
+                ->setParameter('stock', 0)
+                ->orderBy('p.stockQuantity', 'ASC')
+                ->setMaxResults($nb)
+                ->getQuery()
+                ->getResult();
+            ;
+        }
+        public function findBestRateProducts($nb): array {
+            return $this->createQueryBuilder('p')
+                ->orderBy('p.rate', 'DESC')
+                ->setMaxResults($nb)
+                ->getQuery()
+                ->getResult();
+            ;
+        }
 }

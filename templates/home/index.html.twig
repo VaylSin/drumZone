@@ -4,16 +4,47 @@
 
 
 {% block body %}
-
-<div class="col-md-3 homeSidebar">
-    <h3>Categories</h3>
-    <ul>
-        {% for category in categories %}
-            <li><a href="{{ path('app_category_show', {'id': category.id}) }}">{{ category.name }}</a></li>
-        {% endfor %}
-</div>
+<div class="row">
+{{ include('home/partials/_sidebar.html.twig') }}
+{% set count = 0 %}
 <main class="col-md-9 mainContent">
+    <div class="row highlight">
+        {% for item in highlight %}
+            {{
+                include('home/components/highlight-product-card.html.twig',
+                {'item': item})
+            }}
+        {% endfor %}
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 best-sells">
+        {% for item in homeBestSellers %}
+            {% set count = count + 1 %}
+            {{
+                include('home/components/product-card.html.twig',
+                    {'item': item, 'count': count})
+
+            }}
+        {% endfor %}
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 best-sells">
+        {% for item in homeRateProducts %}
+            {% set count = count + 1 %}
+            {{
+                include('home/components/product-card.html.twig',
+                {'item': item, 'count': count})
+            }}
+        {% endfor %}
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 testimonials">
+        {# {% for item in testimonials %} #}
+            {{
+                include('home/components/testimonial-card.html.twig')}}
+                {#{{ include('home/components/product-card.html.twig',
+                {'item': item, 'count': count}) #}
+            {# }} #}
+        {# {% endfor %} #}
+    </div>
 
 </main>
-
+</div>
 {% endblock %}
