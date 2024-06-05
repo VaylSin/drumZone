@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css");
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
 header {
@@ -15,4 +16,7 @@ header {
         outline: 0;
         box-shadow: none;
     }
+}
+.navbar .navbar-brand, .navbar .navbar-nav .nav-link {
+  color: #ffffff;
 }

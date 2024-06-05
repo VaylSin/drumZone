@@ -1,14 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}DrumZone, la marketPlace du batteur{% endblock %}
+
 
 {% block body %}
 
-
-<div class="container-xxl">
-    <h1>Hello {{ name }}! ✅</h1>
-
-    This friendly message is coming from: {{ randomNumber}}
-
+<div class="col-md-3 homeSidebar">
+    <h3>Categories</h3>
+    <ul>
+        {% for category in categories %}
+            <li><a href="{{ path('app_category_show', {'id': category.id}) }}">{{ category.name }}</a></li>
+        {% endfor %}
 </div>
+<main class="col-md-9 mainContent">
+
+</main>
+
 {% endblock %}

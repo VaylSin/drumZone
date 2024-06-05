@@ -26,6 +26,13 @@ class Order
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $status = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?User $user = null;
+
+    public function __construct() {
+        $this->orderDate = new \DateTime();
+        $this->status = 'pending';
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +82,18 @@ class Order
     public function setStatus(?string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
