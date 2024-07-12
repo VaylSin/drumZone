@@ -24,7 +24,7 @@ class HomeController extends AbstractController {
     public function homeDisplay(ProductRepository $productRepository,
         TestimonialRepository $testimonialRepository,
         CategoryRepository $categoryRepository,
-        $max): Response {
+        $max = null): Response {
 
         $highlight = $productRepository->findBy(['lightOn' => true], ['createdAt' => 'DESC'], 2);
         $homeBestSellers = $productRepository->findProductsByBestSells(3);
@@ -45,5 +45,28 @@ class HomeController extends AbstractController {
                 'bestSellers',
                 'bestRateProducts'
             ));
+    }
+    
+    #[Route('/home/block/cat/{max}', name: 'app_home_cat')]
+    public function homeHighlightMenu(ProductRepository $productRepository, CategoryRepository $categoryRepository, $max ): Response {
+        $categories = $categoryRepository->findBy([], null, $max);
+        $highlight = $productRepository->findBy(['lightOn' => true], ['createdAt' => 'DESC'], 2);
+
+        return $this->render('home/highlight_block.html.twig', compact('categories', 'highlight'));
+    }
+
+    #[Route('/home/block/sells/{max}', name: 'app_home_sells')]
+    public function homeSellersMenu(ProductRepository $productRepository, int $max, int $count ): Response {
+        $bestSellersLinks = $productRepository->findProductsByBestSells(5);
+        $bestSellersCards = $productRepository->findProductsByBestSells(3);
+        return $this->render('home/bestSells_block.html.twig', compact('bestSellersLinks', 'bestSellersCards', 'count'));
+    }
+
+    #[Route('/home/block/rates/{max}', name: 'app_home_rates')]
+    public function homeRatesMenu(ProductRepository $productRepository, int $max, int $count ): Response {
+        $bestRateLinks = $productRepository->findBestRateProducts(5);
+        $bestRateCards = $productRepository->findBestRateProducts(3);
+
+        return $this->render('home/bestRates_block.html.twig', compact('bestRateLinks', 'bestRateCards', 'count'));
     }
 }

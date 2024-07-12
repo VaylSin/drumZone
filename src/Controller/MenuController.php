@@ -29,13 +29,6 @@ class MenuController extends AbstractController {
         $categories = $categoryRepository->findAll();
         return $this->render('menu/index.html.twig', compact('categories'));
     }
-    #[Route('/menu/sidebar/{max}', name: 'app_menu_sidebar')]
-    public function sidebarMenu(CategoryRepository $categoryRepository, ProductRepository $productRepository, $max ): Response {
 
-        $categories = $categoryRepository->findBy([], null, $max);
-        $bestSellers = $productRepository->findProductsByBestSells(5);
-        $bestRateProducts = $productRepository->findBestRateProducts(5);
-
-        return $this->render('home/sidebar-menu.html.twig', compact('categories', 'bestSellers', 'bestRateProducts'));
-    }
 }
+

@@ -1,0 +1,25 @@
+<div class="row highlight section_container">
+    <div class="col-md-3">
+        <div class="category_block">
+            <h3 class="lh-sm">Categories</h3>
+            <ul class="list-group list-group-flush mb-3">
+                {% for category in categories %}
+                    {{  include('menu/components/sidebar_link_element.html.twig',
+                            {'item': category, 'path': 'app_category_show' }
+                    )}}
+
+                {% endfor %}
+            </ul>
+            <a href="{{ path('app_category_index') }}" class="btn btn-outline-success  ">Toutes les catégories<i
+                    class="bi bi-chevron-right"></i></a>
+        </div>
+    </div>
+    <div class="row col-md-9">
+        {% for item in highlight %}
+            {{
+                include('home/components/highlight-product-card.html.twig',
+                {'item': item})
+            }}
+        {% endfor %}
+    </div>
+</div>

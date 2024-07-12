@@ -1,6 +1,5 @@
 import './bootstrap.js';
-import './mdb.es.min.js';
-import './mdb.umd.min.js';
+import './slick.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -9,4 +8,10 @@ import './mdb.umd.min.js';
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+
+$('.slider_testimony').slick({
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    });
