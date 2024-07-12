@@ -1,4 +1,4 @@
-<div class="col">
+<div class="{{ isFromHeadlines|default(false) ? 'col-3' : 'col' }}">
     <div class="card h-100">
         <img src="https://picsum.photos/200/200?grayscale&random={{ count }}" class="card-img-top p-3" alt="..." style="aspect-ratio:3/2">
         <div class="card-body">

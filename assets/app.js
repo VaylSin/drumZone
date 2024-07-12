@@ -10,8 +10,9 @@ import './styles/app.css';
 
 
 $('.slider_testimony').slick({
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 5000,
+    infinite: true,
     });

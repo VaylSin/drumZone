@@ -69,7 +69,7 @@ class AppFixtures extends Fixture {
         //* Création des témoignages
         for ($i = 0; $i < 10; $i++) {
             $testimonial = new Testimonial();
-            $testimonial->setContent($faker->sentence)
+            $testimonial->setContent($faker->sentence(rand(10, 15)))
                 ->setCreatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-6 months')->format('Y-m-d H:i:s')))
                 ->setUpdatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-3 months')->format('Y-m-d H:i:s')));
 
@@ -88,7 +88,8 @@ class AppFixtures extends Fixture {
                 ->setActive(1)
                 ->setCreatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-6 months')->format('Y-m-d H:i:s')))
                 ->setUpdatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-3 months')->format('Y-m-d H:i:s')))
-                ->setRate($faker->randomFloat(2, 0, 5));
+                ->setRate($faker->randomFloat(2, 0, 5))
+                ->setLightOn($faker->boolean);
 
             $product->setCategory($this->getReference('category_' . rand(1, 8)));
             $manager->persist($product);

@@ -5,26 +5,33 @@
 
 {% block body %}
 <div class="row">
-{# {{ include('home/partials/_sidebar.html.twig') }} #}
+
+    <main class=" mainContent">
+        {% set count = 0 %}
+        {% include 'home/partials/_highlight_block.html.twig' %}
+        {% include 'home/partials/_sales_block.html.twig' with {'count': count} %}
+        {% include 'home/partials/_rates_block.html.twig' with {'count': count} %}
 
 
-<main class=" mainContent">
-{% set count = 0 %}
-{% include 'home/partials/_highlight_block.html.twig' %}
-{% include 'home/partials/_sales_block.html.twig' with {'count': count} %}
-{% include 'home/partials/_rates_block.html.twig' with {'count': count} %}
+        <div class="row testimonials section_container">
+            <h2 class="text-start">Nos clients témoignent</h2>
+            <div id="carouselControls" class="carousel slide my-4 w-100" data-ride="carousel">
+                <div class="slider_testimony gap-2">
+                    {% for testimonial in testimonials %}
+                        <div class="text-center p-4 mx-2 rounded  {% if loop.first %}active{% endif %}">
+                            <blockquote class="testimonial">
+                                <p>" {{ testimonial.content }} "</p>
+                            </blockquote>
+                            <figcaption>
+                                <b><i> -- {{ testimonial.user.firstName ~ ' ' ~ testimonial.user.lastName }}</i></b>
+                            </figcaption>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% include 'home/partials/_headlines_block.html.twig' with {'count': count} %}
 
-
-<div class="row testimonials section_container">
-    <h2 class="text-start">Nos clients témoignent</h2>
-</div>
-<div id="carouselControls" class="carousel slide w-100" data-ride="carousel">
-    <div class="slider_testimony">
-        <div>your content</div>
-        <div>your content</div>
-        <div>your content</div>
-    </div>
-</div>
-</main>
+    </main>
 </div>
 {% endblock %}

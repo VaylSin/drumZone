@@ -1,0 +1,20 @@
+<div class="row headlinesSales section_container">
+    <div class="row mb-4">
+        <h2 class="text-start">Nos clients recommandent</h2>
+    </div>
+    <div class="row ">
+    {% set count = 0 %}
+        {% for item in headlineProducts %}
+
+            {% set count = count + 1 %}
+            {{
+                include('home/components/product-card.html.twig',
+                    {
+                        'item': item,
+                        'count': count,
+                        'isFromHeadlines': true
+                    })
+            }}
+        {% endfor %}
+    </div>
+</div>

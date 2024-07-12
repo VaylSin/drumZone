@@ -1,7 +1,8 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css");
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
-@import "./slick.css";
-@import "./slick-theme.css";
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" );
+
 
 header {
     background-image: url('/uploads/images/header_banner.jpg');
@@ -31,7 +32,7 @@ header {
 }
 
 .navbar .navbar-brand, .navbar .navbar-nav .nav-link {
-  color: #ffffff;
+    color: #ffffff;
 }
 .highlight-card {
     background-color: #A3CFBB;
@@ -43,5 +44,8 @@ header {
 }
 .card:hover {
     transform: scale(1.05);
-    
+
+}
+.slick-slide {
+    margin: 0 0.5rem;
 }
