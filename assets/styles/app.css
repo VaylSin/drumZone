@@ -43,7 +43,7 @@ header {
     transition: all 0.3s;
 }
 .card:hover {
-    transform: scale(1.05);
+    transform: scale(1.009);
 
 }
 .slick-slide {

@@ -23,5 +23,10 @@
     <div class="container-xxl pt-4">
         {% block body %}{% endblock %}
     </div>
+    {{ render(controller('App\\Controller\\FooterController::footerDisplay')) }}
 
+    {# {{ include('footer/index.html.twig') }} #}
+    {# {% include 'footer/index.html.twig' with {'productsCloud': productsCloud} %} #}
+
+</body>
 </html>

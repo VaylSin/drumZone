@@ -36,6 +36,7 @@ class AppFixtures extends Fixture {
 
 
         $nomsCategories = ['Batterie', 'Electronique', 'Caisse Claire', 'Cymbales', 'Hardware', 'Baguettes', 'Peaux', 'Housse'];
+        $delivery_area = ['worldwide', 'europe only', 'france only'];
         $categories = [];
 
         //* Création des catégories
@@ -89,7 +90,9 @@ class AppFixtures extends Fixture {
                 ->setCreatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-6 months')->format('Y-m-d H:i:s')))
                 ->setUpdatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-3 months')->format('Y-m-d H:i:s')))
                 ->setRate($faker->randomFloat(2, 0, 5))
-                ->setLightOn($faker->boolean);
+                ->setLightOn($faker->boolean)
+                ->setDeliveryArea($delivery_area[rand(0, 2)])
+                ->setDeliveryDelay($faker->numberBetween(1, 10));
 
             $product->setCategory($this->getReference('category_' . rand(1, 8)));
             $manager->persist($product);

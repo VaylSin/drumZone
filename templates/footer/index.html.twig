@@ -1,0 +1,18 @@
+{% block body %}
+{# {{dump(productsCloud)}} #}
+<footer class="footer mt-auto py-3 bg-dark text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                {# <h5>DrumZone</h5>
+                <p>DrumZone est une plateforme de vente en ligne de batteries et accessoires pour batteurs.</p> #}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="my-4">Tags Produits</h3>
+                {% for item in productsCloud %}
+                    <a class="badge rounded p-1 m-1 bg-secondary" href="{{ path('app_product_show', {'id': item.id}) }}"><span >{{ item.name }}</span></a>
+                {% endfor %}
+            </div>
+{% endblock %}

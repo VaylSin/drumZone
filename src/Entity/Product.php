@@ -55,6 +55,12 @@ class Product {
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1)]
     private ?string $rate = null;
 
+    #[ORM\Column(length: 40)]
+    private ?string $delivery_area = null;
+
+    #[ORM\Column]
+    private ?int $delivery_delay = null;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -217,6 +223,30 @@ class Product {
     public function setRate(string $rate): static
     {
         $this->rate = $rate;
+
+        return $this;
+    }
+
+    public function getDeliveryArea(): ?string
+    {
+        return $this->delivery_area;
+    }
+
+    public function setDeliveryArea(string $delivery_area): static
+    {
+        $this->delivery_area = $delivery_area;
+
+        return $this;
+    }
+
+    public function getDeliveryDelay(): ?int
+    {
+        return $this->delivery_delay;
+    }
+
+    public function setDeliveryDelay(int $delivery_delay): static
+    {
+        $this->delivery_delay = $delivery_delay;
 
         return $this;
     }

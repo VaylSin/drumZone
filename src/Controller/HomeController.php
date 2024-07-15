@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class HomeController extends AbstractController {
 
     private $manager;
@@ -30,6 +31,8 @@ class HomeController extends AbstractController {
         $homeBestSellers = $this->productRepository->findProductsByBestSells(3);
         $homeRateProducts = $this->productRepository->findBestRateProducts(3);
         $testimonials = $testimonialRepository->findBy([], ['createdAt' => 'DESC'], 6);
+        // $productsCloud = $this->productRepository->findBy([], ['name' => 'DESC'], 25);
+        $productsCloud = $this->productRepository->findAll();
 
         // export depuis le menuController pour la sidebar menu
         $categories = $categoryRepository->findBy([], null, $max);
@@ -43,9 +46,11 @@ class HomeController extends AbstractController {
                 'testimonials',
                 'categories',
                 'bestSellers',
-                'bestRateProducts'
+                'bestRateProducts',
+                'productsCloud'
             ));
     }
+
     #[Route('/home/block/headlines/{max}', name: 'app_home_headlines')]
     public function homeHeadlineMenu(int $max, int $count ): Response {
         $headlineProducts = $this->productRepository->findBy(['lightOn' => true], ['createdAt' => 'DESC'], $max);
@@ -79,5 +84,10 @@ class HomeController extends AbstractController {
         return $this->render('home/bestRates_block.html.twig', compact('bestRateLinks', 'bestRateCards', 'count'));
     }
 
+    #[Route('/home/block/product-cloud/{max}', name: 'app_home_product-cloud')]
+    public function homeProductCloudMenu(int $max): Response {
+        $products = $this->productRepository->findBy([], ['createdAt' => 'DESC'], $max);
+        return $this->render('base/footer.html.twig', compact('products'));
+    }
 
 }

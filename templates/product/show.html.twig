@@ -3,6 +3,17 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
+
+<div class="row">
+    <div class="col-12 col-md-6 product_visual"></div>
+    <div class="col-12 col-md-6 product_details">
+        <h1>{{product.name | capitalize}}</h1>
+        <p>{{product.rate}}</p>
+        <p>{{product.description}}</p>
+        ul>li
+    </div>
+</div>
+
     <h1>Product</h1>
 
     <table class="table">
@@ -35,14 +46,7 @@
                 <th>IsActive</th>
                 <td>{{ product.isActive ? 'Yes' : 'No' }}</td>
             </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+
             <tr>
                 <th>LightOn</th>
                 <td>{{ product.lightOn ? 'Yes' : 'No' }}</td>
