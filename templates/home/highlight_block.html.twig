@@ -1,13 +1,16 @@
 <div class="row highlight section_container">
-    <div class="col-md-3">
+    <div class="d-flex align-items-center col-md-3">
         <div class="category_block">
             <h3 class="lh-sm">Categories</h3>
-            <ul class="list-group list-group-flush mb-3">
+            <ul class="list-group list-group-flush my-4">
                 {% for category in categories %}
                     {{  include('menu/components/sidebar_link_element.html.twig',
-                            {'item': category, 'path': 'app_category_show' }
+                            {
+                                'item': category,
+                                'path': 'app_category_show',
+                                'isFromHeadlines': true
+                            }
                     )}}
-
                 {% endfor %}
             </ul>
             <a href="{{ path('app_category_index') }}" class="btn btn-outline-success  ">Toutes les catégories<i

@@ -36,9 +36,10 @@ class AppFixtures extends Fixture {
 
 
         $nomsCategories = ['Batterie', 'Electronique', 'Caisse Claire', 'Cymbales', 'Hardware', 'Baguettes', 'Peaux', 'Housse'];
-        $delivery_area = ['worldwide', 'europe only', 'france only'];
+        $delivery_area = ['Monde Entier', 'Zone Europe', 'France Uniquement'];
         $categories = [];
-
+        // $numberOfWords = rand(25, 50);
+        // $sentence = implode(' ', $faker->words($numberOfWords, true)) . '.';
         //* Création des catégories
         foreach ($nomsCategories as $i => $cat) {
             $categorie = new Category();
@@ -82,7 +83,7 @@ class AppFixtures extends Fixture {
         for ($i = 0; $i < 50; $i++) {
             $product = new Product();
             $product->setName($faker->word)
-                ->setDescription($faker->sentence)
+                ->setDescription($faker->words(rand(25,50), true))
                 ->setPrice($faker->randomFloat(2, 10, 100))
                 ->setSku($faker->ean13)
                 ->setStockQuantity($faker->numberBetween(0, 100))
@@ -93,6 +94,12 @@ class AppFixtures extends Fixture {
                 ->setLightOn($faker->boolean)
                 ->setDeliveryArea($delivery_area[rand(0, 2)])
                 ->setDeliveryDelay($faker->numberBetween(1, 10));
+                if (mt_rand(1, 5) === 1) { // 20% de chance d'avoir un solde
+                    $discount = mt_rand(10, 50); // Un solde aléatoire entre 10% et 50%
+                    $product->setDiscount($discount);
+                } else {
+                    $product->setDiscount(0); // Pas de solde
+                }
 
             $product->setCategory($this->getReference('category_' . rand(1, 8)));
             $manager->persist($product);

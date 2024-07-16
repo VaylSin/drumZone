@@ -57,4 +57,23 @@ class ProductRepository extends ServiceEntityRepository
                 ->getResult();
             ;
         }
+        public function findRelatedProducts($categoryId, $currentProductId, $limit = 4) {
+            return $this->createQueryBuilder('p')
+                ->where('p.category = :categoryId')
+                ->andWhere('p.id != :currentProductId')
+                ->setParameter('categoryId', $categoryId)
+                ->setParameter('currentProductId', $currentProductId)
+                ->setMaxResults($limit)
+                ->getQuery()
+                ->getResult();
+        }
+        public function findDiscountProducts($value, $max) {
+            return $this->createQueryBuilder('p')
+                ->where('p.discount > :value')
+                ->setParameter('value', $value)
+                ->orderBy('p.createdAt', 'DESC')
+                ->setMaxResults($max)
+                ->getQuery()
+                ->getResult();
+        }
 }

@@ -61,6 +61,9 @@ class Product {
     #[ORM\Column]
     private ?int $delivery_delay = null;
 
+    #[ORM\Column]
+    private ?int $discount = null;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -247,6 +250,18 @@ class Product {
     public function setDeliveryDelay(int $delivery_delay): static
     {
         $this->delivery_delay = $delivery_delay;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?int
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(int $discount): static
+    {
+        $this->discount = $discount;
 
         return $this;
     }

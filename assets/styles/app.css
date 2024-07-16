@@ -49,3 +49,18 @@ header {
 .slick-slide {
     margin: 0 0.5rem;
 }
+
+.product_detail--details {
+    ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .5rem;
+    }
+}
+.product_visual {
+    img {
+        aspect-ratio: 2 / 1;
+        object-fit: cover;
+        object-position: center;
+    }
+}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégorie {{ category.name }}{% endblock %}
+
+{% block body %}
+<h1 class="mb-5">Catégorie {{ category.name }}</h1>
+<div class="row ">
+    {% for product in products %}
+        {% set count = loop.index %}
+        {{
+            include('home/components/product-card.html.twig',
+                {'item': product, 'count': count})
+
+        }}
+    {% endfor %}
+</div>
+{% endblock %}

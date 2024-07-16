@@ -1,7 +1,7 @@
 <div class="col-md-3 homeSidebar">
     <div class="category_block">
         <h3 class="lh-sm">Categories</h3>
-        <ul class="list-group list-group-flush mb-3">
+        <ul class="list-group list-group-flush my-4">
             {% for category in categories %}
                 {{  include('menu/components/sidebar_link_element.html.twig',
                         {'item': category, 'path': 'app_category_show' }
@@ -13,8 +13,8 @@
                 class="bi bi-chevron-right"></i></a>
     </div>
     <div class="best_sellers_block mt-4">
-        <h3 class="lh-sm">Meilleures ventes</h3>
-        <ul class="list-group list-group-flush mb-3">
+        <h3 class="lh-sm">Meilleures ventes pouet</h3>
+        <ul class="list-group list-group-flush my-4">
             {% for item in bestSellers %}
                 {{  include('menu/components/sidebar_link_element.html.twig',
                         {'item': item, 'path': 'app_product_show' }
@@ -26,7 +26,7 @@
     </div>
     <div class="best_rate_block mt-4">
         <h3 class="lh-sm">Les mieux notés</h3>
-        <ul class="list-group list-group-flush mb-3">
+        <ul class="list-group list-group-flush my-4">
             {% for item in bestRateProducts %}
                 {{  include('menu/components/sidebar_link_element.html.twig',
                         {'item': item, 'path': 'app_product_show' }

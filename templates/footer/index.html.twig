@@ -1,6 +1,5 @@
 {% block body %}
-{# {{dump(productsCloud)}} #}
-<footer class="footer mt-auto py-3 bg-dark text-white">
+<footer class="footer py-3 bg-dark text-white mt-5">
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-4">
@@ -12,7 +11,7 @@
             <div class="col-12">
                 <h3 class="my-4">Tags Produits</h3>
                 {% for item in productsCloud %}
-                    <a class="badge rounded p-1 m-1 bg-secondary" href="{{ path('app_product_show', {'id': item.id}) }}"><span >{{ item.name }}</span></a>
+                    <a class="badge rounded p-1 m-1 bg-secondary text-decoration-none" href="{{ path('app_product_show', {'id': item.id}) }}"><span >{{ item.name }}</span></a>
                 {% endfor %}
             </div>
 {% endblock %}

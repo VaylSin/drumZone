@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/category')]
+#[Route('/categories')]
 class CategoryController extends AbstractController {
     private $manager;
 
@@ -20,8 +20,8 @@ class CategoryController extends AbstractController {
     }
 
     #[Route('/', name: 'app_category_index', methods: ['GET'])]
-    public function index(CategoryRepository $categoryRepository): Response
-    {
+    public function index(CategoryRepository $categoryRepository): Response {
+
         return $this->render('category/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
         ]);
@@ -78,5 +78,15 @@ class CategoryController extends AbstractController {
         $this->manager->remove($category);
         $this->manager->flush();
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/products', name: 'app_category_products', methods: ['GET'])]
+    public function listProducts(Category $category): Response {
+        $products = $category->getProducts(); // Récupère les produits de la catégorie
+
+        return $this->render('category/products_list.html.twig', [
+            'category' => $category,
+            'products' => $products,
+        ]);
     }
 }

@@ -2,7 +2,7 @@
     <div class="d-flex align-items-center col-md-3">
         <div class="category_block">
             <h3 class="lh-sm">Meilleures ventes</h3>
-            <ul class="list-group list-group-flush mb-3">
+            <ul class="list-group list-group-flush my-4">
                 {% for item in bestSellersLinks %}
                     {{  include('menu/components/sidebar_link_element.html.twig',
                             {'item': item, 'path': 'app_category_show' }

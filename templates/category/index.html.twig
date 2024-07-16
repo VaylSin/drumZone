@@ -3,9 +3,18 @@
 {% block title %}Category index{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+    <h1 class="mb-5">Les catégories de materiel</h1>
+    <div class="row ">
+        {% for category in categories %}
+            {% set count = loop.index %}
+            {{
+                include('category/components/category-card.html.twig',
+                    {'item': category, 'count': count})
 
-    <table class="table">
+            }}
+        {% endfor %}
+    </div>
+    {# <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -30,7 +39,7 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
 
     <a href="{{ path('app_category_add') }}">Ajouter Catégorie</a>
 {% endblock %}

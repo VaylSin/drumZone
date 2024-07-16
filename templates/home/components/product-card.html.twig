@@ -1,14 +1,24 @@
 <div class="{{ isFromHeadlines|default(false) ? 'col-3' : 'col' }}">
-    <div class="card h-100">
+    <div class="card h-100 relative">
+        {% if item.discount %}
+            <span class="badge bg-success position-absolute top-0 start-0"> - {{ item.discount }} %</span>
+        {% endif %}
         <img src="https://picsum.photos/200/200?grayscale&random={{ count }}" class="card-img-top p-3" alt="..." style="aspect-ratio:3/2">
         <div class="card-body">
 
             <h5 class="card-title">{{item.name|capitalize}}</h5>
-            <p class="card-text">{{item.description}}</p>
+            <p class="card-text">{{item.description| truncate | capitalize}}</p>
         </div>
         <div class="card-footer d-flex align-items-center py-2">
-            <small class="fw-bold">{{item.price}} €</small>
-            <a href="{{ path('app_product_show', {'id': item.id}) }}" class="btn btn-success ms-auto">Voir </a>
+        {% if item.discount %}
+            {% set price = item.price - (item.price * item.discount / 100) %}
+            <small class="fw-bold me-2">{{ price|number_format(1, '.', ',') }} €</small>
+            <small class="text-decoration-line-through text-muted">{{ item.price|number_format(1, '.', ',') }} €</small>
+        {% else %}
+            {% set price = item.price %}
+            <small class="fw-bold">{{ price|number_format(1, '.', ',') }} €</small>
+        {% endif %}
+            <a href="{{ path('app_product_show', {'id': item.id}) }}" class="btn btn-success ms-auto">Voir</a>
         </div>
     </div>
 </div>

@@ -31,7 +31,6 @@ class HomeController extends AbstractController {
         $homeBestSellers = $this->productRepository->findProductsByBestSells(3);
         $homeRateProducts = $this->productRepository->findBestRateProducts(3);
         $testimonials = $testimonialRepository->findBy([], ['createdAt' => 'DESC'], 6);
-        // $productsCloud = $this->productRepository->findBy([], ['name' => 'DESC'], 25);
         $productsCloud = $this->productRepository->findAll();
 
         // export depuis le menuController pour la sidebar menu
@@ -53,9 +52,10 @@ class HomeController extends AbstractController {
 
     #[Route('/home/block/headlines/{max}', name: 'app_home_headlines')]
     public function homeHeadlineMenu(int $max, int $count ): Response {
-        $headlineProducts = $this->productRepository->findBy(['lightOn' => true], ['createdAt' => 'DESC'], $max);
+        // $headlineProducts = $this->productRepository->findBy(['lightOn' => true], ['createdAt' => 'DESC'], $max);
+        $discountProducts = $this->productRepository->findDiscountProducts(0, 4);
         return $this->render('home/headlines_block.html.twig', [
-            'headlineProducts' => $headlineProducts,
+            'headlineProducts' => $discountProducts,
             'count' => $count,
             'isFromHeadlines' => true,
         ]);

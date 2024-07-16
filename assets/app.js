@@ -13,6 +13,10 @@ $('.slider_testimony').slick({
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 2000,
     infinite: true,
-    });
+});
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const quantityInput = document.getElementById('quantity');
+// });

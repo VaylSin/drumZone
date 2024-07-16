@@ -34,17 +34,24 @@ class ProductController extends AbstractController {
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('product/new.html.twig', [
-            'product' => $product,
-            'form' => $form,
-        ]);
+        return $this->render('product/new.html.twig', compact('product','form'));
     }
 
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
-    public function show(Product $product): Response {
-        return $this->render('product/show.html.twig', [
-            'product' => $product,
-        ]);
+    public function show(Product $product, ProductRepository $productRepository): Response {
+
+        $isOnSale = $product->getDiscount() > 0; // Supposons que getDiscount() retourne un pourcentage de réduction
+        $originalPrice = $product->getPrice();
+        $salePrice = null;
+        if ($isOnSale) {
+            $salePrice = $originalPrice - ($originalPrice * $product->getDiscount() / 100);
+        }
+        $category = $product->getCategory();
+        $relatedProducts = $productRepository->findRelatedProducts(
+            $category->getId(),
+            $product->getId()
+        );
+        return $this->render('product/show.html.twig',compact('product', 'relatedProducts', 'isOnSale', 'salePrice', 'originalPrice'));
     }
 
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
@@ -73,4 +80,5 @@ class ProductController extends AbstractController {
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }
