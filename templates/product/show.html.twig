@@ -8,9 +8,9 @@
     <div class="col-12 col-md-6 product_visual">
         {% set count = 0 %}
         {% for image in product.image %}
-            <a href="{{ image.url }}" data-lightbox="product-gallery" data-title="{{ product.name | escape }}">
-                <img src="{{ image.url }}" class="card-img-top" alt="{{ product.name | escape }}" >
-            </a>
+        <a href="{{ image.url }}" data-lightbox="product-gallery" data-title="{{ product.name | escape }}">
+            <img src="{{ image.url }}" class="card-img-top my-2" alt="{{ product.name | escape }}">
+        </a>
         {% endfor %}
     </div>
     <div class="col-12 col-md-6 product_details">
@@ -20,11 +20,11 @@
         <div class="product_detail--rate">
             <p>Note :
                 {% for i in 1..5 %}
-                    {% if i <= product.rate %}
-                        <span class="text-warning">&#9733;</span> {# Étoile pleine #}
-                    {% else %}
-                        <span>&#9734;</span> {# Étoile vide #}
-                    {% endif %}
+                {% if i <= product.rate %}
+                <span class="text-warning">&#9733;</span> {# Étoile pleine #}
+                {% else %}
+                <span>&#9734;</span> {# Étoile vide #}
+                {% endif %}
                 {% endfor %}
                 ( {{ product.rate }} / 5 )
             </p>
@@ -46,42 +46,59 @@
         <div class="product_detail--price-to-cart d-flex justify-content-between align-items-center">
             <div class="product_detail--price__price d-flex align-items-center">
                 {% if isOnSale %}
-                    <h2 class="fw-bold text-success d-inline m-0">{{ salePrice|number_format(2, '.', ',') }} €</h2>
-                    <p class="text-decoration-line-through text-muted d-inline m-0 ms-4">{{ originalPrice|number_format(2, '.', ',') }} €</p>
+                <h2 class="fw-bold text-success d-inline m-0">{{ salePrice|number_format(2, '.', ',') }} €</h2>
+                <p class="text-decoration-line-through text-muted d-inline m-0 ms-4">
+                    {{ originalPrice|number_format(2, '.', ',') }} €</p>
                 {% else %}
-                    <h2 class="fw-bold text-success">{{ originalPrice|number_format(2, '.', ',') }} €</h2>
+                <h2 class="fw-bold text-success">{{ originalPrice|number_format(2, '.', ',') }} €</h2>
                 {% endif %}
             </div>
             <div class="quantity-cart d-flex ">
-                <div class="product_quantity d-flex align-items-center me-2 justify-content-end">
+                {# <div class="product_quantity d-flex align-items-center me-2 justify-content-end">
                     <label for="quantity">Quantité &nbsp;</label>
                     <input id="quantity" type="text" value="1" readonly class="product_quantity--input w-25">
                 </div>
                 <div class="product_detail--to-cart">
                     <a href="{{ path('app_home', {'id': product.id}) }}" class="btn btn-success"> + Ajouter au
                         panier</a>
+                </div> #}
+                {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
+                <div class="form-group">
+                    {{ form_label(form.quantity) }}
+                    {{ form_widget(form.quantity, {
+                        'attr': {
+                            'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid')
+                        }
+                    }) }}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.quantity) }}
+                    </div>
                 </div>
+                {{ form_widget(form.add, {'attr': {'class': 'btn btn-success'}}) }}
+                {{ form_end(form) }}
             </div>
         </div>
-    </div>
-</div>
-{% if product.testimonials is defined and product.testimonials %}
+        {% if product.testimonials is defined and product.testimonials %}
 <div class="col-12 product_testimonials my-5">
     <div class="row">
         <h2 class="text-start mb-4">Avis des clients</h2>
         <ul class="list-group">
-        {% for testimonial in product.testimonials %}
-            <li class="rounded list-group-item" >
+            {% for testimonial in product.testimonials %}
+            <li class="rounded list-group-item">
                 <p class="m-0">{{testimonial.content}}</p>
                 <small>-- <b>{{testimonial.user.firstName ~ '  ' ~ testimonial.user.lastName}}</b></small>
             </li>
-        {% endfor %}
+            {% endfor %}
         </ul>
-    </div>  
+    </div>
 </div>
 {% endif %}
+    </div>
+    
+</div>
+
 {% if relatedProducts is defined %}
-<div class="row product_related_container">
+<div class="row product_related_container my-5">
     <div class="row mb-4">
         <h2 class="text-start">Articles similaires dans "{{ product.category.name }}"</h2>
     </div>

@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
@@ -14,62 +17,75 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $orderNumber = null;
+    /**
+     * @var Collection<int, OrderItem>
+     */
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderRef', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $items;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $orderDate = null;
+    #[ORM\Column(length: 255)]
+    private ?string $status = self::STATUS_CART;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $totalAmount = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
-    private ?string $status = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    private ?User $user = null;
+    /**
+     * An order that is in progress, not placed yet.
+     *
+     * @var string
+     */
+    const STATUS_CART = 'cart';
 
-    public function __construct() {
-        $this->orderDate = new \DateTime();
-        $this->status = 'pending';
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOrderNumber(): ?string
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getItems(): Collection
     {
-        return $this->orderNumber;
+        return $this->items;
     }
 
-    public function setOrderNumber(string $orderNumber): static
-    {
-        $this->orderNumber = $orderNumber;
+    public function addItem(OrderItem $item): static {
+        
+        foreach ($this->getItems() as $existingItem) {
+            // The item already exists, update the quantity
+            if ($existingItem->equals($item)) {
+                $existingItem->setQuantity(
+                    $existingItem->getQuantity() + $item->getQuantity()
+                );
+                return $this;
+            }
+        }
+
+        $this->items[] = $item;
+        $item->setOrderRef($this);
 
         return $this;
     }
 
-    public function getOrderDate(): ?\DateTimeImmutable
-    {
-        return $this->orderDate;
-    }
+    /**
+     * Removes all items from the order.
+     *
+     * @return $this
+     */
+    // public function removeItems(): self
+    public function removeItem(OrderItem $item): static {
 
-    public function setOrderDate(\DateTimeImmutable $orderDate): static
-    {
-        $this->orderDate = $orderDate;
-
-        return $this;
-    }
-
-    public function getTotalAmount(): ?float
-    {
-        return $this->totalAmount;
-    }
-
-    public function setTotalAmount(?float $totalAmount): static
-    {
-        $this->totalAmount = $totalAmount;
+        foreach ($this->getItems() as $item) {
+            $this->removeItem($item);
+        }
 
         return $this;
     }
@@ -79,22 +95,60 @@ class Order
         return $this->status;
     }
 
-    public function setStatus(?string $status): static
+    public function setStatus(string $status): static
     {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->user;
+        return $this->createdAt;
     }
 
-    public function setUser(?User $user): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->user = $user;
+        $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
+     * Tests if the given item given corresponds to the same order item.
+     *
+     * @param OrderItem $item
+     *
+     * @return bool
+     */
+    public function equals(OrderItem $item): bool
+    {
+        return $this->getProduct()->getId() === $item->getProduct()->getId();
+    }
+    /**
+     * Calculates the order total.
+     *
+     * @return float
+     */
+    public function getTotal(): float
+    {
+        $total = 0;
+
+        foreach ($this->getItems() as $item) {
+            $total += $item->getTotal();
+        }
+
+        return $total;
     }
 }

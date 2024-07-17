@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\AddToCartType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/product')]
 class ProductController extends AbstractController {
@@ -39,7 +40,7 @@ class ProductController extends AbstractController {
 
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product, ProductRepository $productRepository): Response {
-
+        $form = $this->createForm(AddToCartType::class);
         $isOnSale = $product->getDiscount() > 0; // Supposons que getDiscount() retourne un pourcentage de réduction
         $originalPrice = $product->getPrice();
         $salePrice = null;
@@ -51,7 +52,14 @@ class ProductController extends AbstractController {
             $category->getId(),
             $product->getId()
         );
-        return $this->render('product/show.html.twig',compact('product', 'relatedProducts', 'isOnSale', 'salePrice', 'originalPrice'));
+        return $this->render('product/show.html.twig',[
+            'product' => $product,
+            'relatedProducts' => $relatedProducts,
+            'isOnSale' => $isOnSale,
+            'salePrice' => $salePrice,
+            'originalPrice' => $originalPrice,
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
