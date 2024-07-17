@@ -4,13 +4,23 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ">
-        {% for item in categories %}
-        {# w-100 justify-content-evenly #}
-            <li class="nav-item me-4">
-                <a class="nav-link" href="#">{{item.name}}</a>
+        <ul class="navbar-nav">
+            {% for category in categories %}
+            <li class="nav-item me-4 dropdown">
+                <a class="nav-link menu-category dropdown-toggle" href="#" id="navbarDropdownMenuLink{{ category.id }}"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ category.name }}
+                </a>
+                {% if category.products|default([]) is not empty %}
+                <ul class="dropdown-menu bg-secondary " aria-labelledby="navbarDropdownMenuLink{{ category.id }}">
+                    {% for product in category.products %}
+                    <li><a class="dropdown-item"
+                            href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </li>
-        {% endfor %}
+            {% endfor %}
         </ul>
     </div>
 </nav>

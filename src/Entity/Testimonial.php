@@ -26,6 +26,9 @@ class Testimonial
     #[ORM\ManyToOne(inversedBy: 'testimonials')]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'testimonials')]
+    private ?Product $product = null;
+
     public function __construct() {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
@@ -79,6 +82,18 @@ class Testimonial
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }

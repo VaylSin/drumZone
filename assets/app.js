@@ -17,6 +17,12 @@ $('.slider_testimony').slick({
     infinite: true,
 });
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const quantityInput = document.getElementById('quantity');
-// });
+
+$('.dropdown').hover(function() {
+    $(this).find('.dropdown-menu').stop(true, true).delay(100).fadeIn(500);
+}, function() {
+    $(this).find('.dropdown-menu').stop(true, true).delay(100).fadeOut(500);
+});
+$('.dropdown-menu').click(function(e) {
+    e.stopPropagation();
+});

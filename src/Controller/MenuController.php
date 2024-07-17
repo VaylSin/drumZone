@@ -25,8 +25,13 @@ class MenuController extends AbstractController {
         ]);
     }
     #[Route('/menu/main', name: 'app_menu-main')]
-    public function categoryMenu( CategoryRepository $categoryRepository, ): Response {
+    public function categoryMenu( CategoryRepository $categoryRepository, ProductRepository $productRepository): Response {
+
         $categories = $categoryRepository->findAll();
+        foreach ($categories as $category) {
+            $category->getProducts(); // Assurez-vous que votre entité Catégorie a une méthode getProducts()
+        }
+
         return $this->render('menu/index.html.twig', compact('categories'));
     }
 

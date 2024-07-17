@@ -30,16 +30,13 @@ class AppFixtures extends Fixture {
         $faker = Factory::create();
         $faker->addProvider(new \Xvladqt\Faker\LoremFlickrProvider($faker));
 
-
-        //TODO l'entité: categorie
-
+         $products = [];
 
 
         $nomsCategories = ['Batterie', 'Electronique', 'Caisse Claire', 'Cymbales', 'Hardware', 'Baguettes', 'Peaux', 'Housse'];
         $delivery_area = ['Monde Entier', 'Zone Europe', 'France Uniquement'];
         $categories = [];
-        // $numberOfWords = rand(25, 50);
-        // $sentence = implode(' ', $faker->words($numberOfWords, true)) . '.';
+
         //* Création des catégories
         foreach ($nomsCategories as $i => $cat) {
             $categorie = new Category();
@@ -49,7 +46,7 @@ class AppFixtures extends Fixture {
             $this->addReference('category_' . ($i+1), $categorie);
         }
         //* Création des users
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $user = new User();
             $user->setEmail($faker->email)
                 ->setPassword($this->passwordHasher->hashPassword(
@@ -66,19 +63,9 @@ class AppFixtures extends Fixture {
                 ->setCreatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-6 months')->format('Y-m-d H:i:s')))
                 ->setUpdatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-3 months')->format('Y-m-d H:i:s')));
             $manager->persist($user);
-            $this->addReference('user_' . ($i+1), $user);
+            $this->addReference('user_' . $i, $user);
         }
-        //* Création des témoignages
-        for ($i = 0; $i < 10; $i++) {
-            $testimonial = new Testimonial();
-            $testimonial->setContent($faker->sentence(rand(10, 15)))
-                ->setCreatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-6 months')->format('Y-m-d H:i:s')))
-                ->setUpdatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-3 months')->format('Y-m-d H:i:s')));
-
-            $testimonial->setUser($this->getReference('user_' . rand(1, 10)));
-            $manager->persist($testimonial);
-            $this->addReference('testimonial_' . ($i+1), $testimonial);
-        }
+        
         //* Création des produits
         for ($i = 0; $i < 50; $i++) {
             $product = new Product();
@@ -94,6 +81,15 @@ class AppFixtures extends Fixture {
                 ->setLightOn($faker->boolean)
                 ->setDeliveryArea($delivery_area[rand(0, 2)])
                 ->setDeliveryDelay($faker->numberBetween(1, 10));
+                // Création des images pour chaque produit
+                $numImages = rand(1, 4); // Génère un nombre aléatoire d'images entre 1 et 4
+                for ($j = 0; $j < $numImages; $j++) {
+                    $image = new Image();
+                    $image->setUrl($faker->imageUrl(640, 480, 'nature', true))
+                        ->setAlt('Description de l\'image ' . $j)
+                        ->setProduct($product); // Associe l'image au produit
+                    $manager->persist($image);
+                }
                 if (mt_rand(1, 5) === 1) { // 20% de chance d'avoir un solde
                     $discount = mt_rand(10, 50); // Un solde aléatoire entre 10% et 50%
                     $product->setDiscount($discount);
@@ -103,6 +99,19 @@ class AppFixtures extends Fixture {
 
             $product->setCategory($this->getReference('category_' . rand(1, 8)));
             $manager->persist($product);
+            $products[] = $product; // Ajout du produit au tableau $products
+
+        }
+        //* Création des témoignages assignés à un produit et à un utilisateur
+        for ($i = 0; $i < 100; $i++) {
+            $testimonial = new Testimonial();
+            $testimonial->setContent($faker->sentence(rand(10, 15)))
+                ->setCreatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-6 months')->format('Y-m-d H:i:s')))
+                ->setUpdatedAt(new \DateTimeImmutable($faker->dateTimeBetween('-3 months')->format('Y-m-d H:i:s')))
+                ->setUser($this->getReference('user_' . rand(0, 19))) // Assignation aléatoire d'un utilisateur
+                ->setProduct($products[array_rand($products)]); // Assignation aléatoire d'un produit
+            $testimonial->setUser($this->getReference('user_' . rand(0, 19)));
+            $manager->persist($testimonial);
         }
 
 

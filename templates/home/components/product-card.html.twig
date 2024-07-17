@@ -1,9 +1,13 @@
-<div class="{{ isFromHeadlines|default(false) ? 'col-3' : 'col' }}">
+<div class="{{ isFromHeadlines|default(false) ? 'col-3' : 'col-4' }}">
     <div class="card h-100 relative">
         {% if item.discount %}
             <span class="badge bg-success position-absolute top-0 start-0"> - {{ item.discount }} %</span>
         {% endif %}
-        <img src="https://picsum.photos/200/200?grayscale&random={{ count }}" class="card-img-top p-3" alt="..." style="aspect-ratio:3/2">
+        {% if item.image is defined and item.image|length > 0 %}
+            <img src="{{ item.image[0].url }}" class="card-img-top p-3" alt="{{ item.name | escape }}" >
+        {% else %}
+            <img src="https://picsum.photos/200/200?grayscale&random={{ count }}" class="card-img-top p-3" alt="..." style="aspect-ratio:3/2">
+        {% endif %}
         <div class="card-body">
 
             <h5 class="card-title">{{item.name|capitalize}}</h5>

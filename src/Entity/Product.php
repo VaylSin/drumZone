@@ -64,9 +64,23 @@ class Product {
     #[ORM\Column]
     private ?int $discount = null;
 
+    /**
+     * @var Collection<int, Image>
+     */
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'product')]
+    private Collection $image;
+
+    /**
+     * @var Collection<int, Testimonial>
+     */
+    #[ORM\OneToMany(targetEntity: Testimonial::class, mappedBy: 'product')]
+    private Collection $testimonials;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->image = new ArrayCollection();
+        $this->testimonials = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,6 +276,66 @@ class Product {
     public function setDiscount(int $discount): static
     {
         $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImage(): Collection
+    {
+        return $this->image;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->image->contains($image)) {
+            $this->image->add($image);
+            $image->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->image->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getProduct() === $this) {
+                $image->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Testimonial>
+     */
+    public function getTestimonials(): Collection
+    {
+        return $this->testimonials;
+    }
+
+    public function addTestimonial(Testimonial $testimonial): static
+    {
+        if (!$this->testimonials->contains($testimonial)) {
+            $this->testimonials->add($testimonial);
+            $testimonial->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTestimonial(Testimonial $testimonial): static
+    {
+        if ($this->testimonials->removeElement($testimonial)) {
+            // set the owning side to null (unless already changed)
+            if ($testimonial->getProduct() === $this) {
+                $testimonial->setProduct(null);
+            }
+        }
 
         return $this;
     }

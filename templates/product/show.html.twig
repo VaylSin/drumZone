@@ -6,10 +6,11 @@
 
 <div class="row product_container mb-5">
     <div class="col-12 col-md-6 product_visual">
-        {% set img = 3 %}
         {% set count = 0 %}
-        {% for i in 1..img %}
-            <img src="https://picsum.photos/200/200?grayscale&random={{ i }}" class="card-img-top py-3" alt="..." style="aspect-ratio:2/1">
+        {% for image in product.image %}
+            <a href="{{ image.url }}" data-lightbox="product-gallery" data-title="{{ product.name | escape }}">
+                <img src="{{ image.url }}" class="card-img-top" alt="{{ product.name | escape }}" >
+            </a>
         {% endfor %}
     </div>
     <div class="col-12 col-md-6 product_details">
@@ -64,6 +65,21 @@
         </div>
     </div>
 </div>
+{% if product.testimonials is defined and product.testimonials %}
+<div class="col-12 product_testimonials my-5">
+    <div class="row">
+        <h2 class="text-start mb-4">Avis des clients</h2>
+        <ul class="list-group">
+        {% for testimonial in product.testimonials %}
+            <li class="rounded list-group-item" >
+                <p class="m-0">{{testimonial.content}}</p>
+                <small>-- <b>{{testimonial.user.firstName ~ '  ' ~ testimonial.user.lastName}}</b></small>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>  
+</div>
+{% endif %}
 {% if relatedProducts is defined %}
 <div class="row product_related_container">
     <div class="row mb-4">
