@@ -80,16 +80,30 @@ class Order
      *
      * @return $this
      */
-    // public function removeItems(): self
-    public function removeItem(OrderItem $item): static {
+    public function removeItem(OrderItem $item): self
+    {
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getOrderRef() === $this) {
+                $item->setOrderRef(null);
+            }
+        }
 
+        return $this;
+    }
+    /**
+     * Removes all items from the order.
+     *
+     * @return $this
+     */
+    public function removeItems(): self
+    {
         foreach ($this->getItems() as $item) {
             $this->removeItem($item);
         }
 
         return $this;
     }
-
     public function getStatus(): ?string
     {
         return $this->status;

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
+use App\Manager\CartManager;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,9 +39,28 @@ class ProductController extends AbstractController {
         return $this->render('product/new.html.twig', compact('product','form'));
     }
 
-    #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
-    public function show(Product $product, ProductRepository $productRepository): Response {
+    #[Route('/{id}', name: 'app_product_show')]
+    public function show(Product $product,
+        ProductRepository $productRepository,
+        Request $request,
+        CartManager $cartManager): Response {
+
         $form = $this->createForm(AddToCartType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $item = $form->getData();
+            $item->setProduct($product);
+
+            $cart = $cartManager->getCurrentCart();
+            $cart
+                ->addItem($item)
+                ->setUpdatedAt(new \DateTime());
+
+            $cartManager->save($cart);
+            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
+        }
         $isOnSale = $product->getDiscount() > 0; // Supposons que getDiscount() retourne un pourcentage de réduction
         $originalPrice = $product->getPrice();
         $salePrice = null;
