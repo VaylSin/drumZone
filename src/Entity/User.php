@@ -6,10 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements PasswordAuthenticatedUserInterface {
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface,  PasswordAuthenticatedUserInterface {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -49,6 +52,10 @@ class User implements PasswordAuthenticatedUserInterface {
     private ?\DateTimeImmutable $updatedAt = null;
 
 
+
+    public function getUserIdentifier(): string {
+        return (string) $this->email;
+    }
     /**
      * @var Collection<int, Testimonial>
      */
@@ -93,10 +100,22 @@ class User implements PasswordAuthenticatedUserInterface {
 
         return $this;
     }
-
+    public function getSalt(): ?string {
+        // Vous pouvez retourner null si vous utilisez un algorithme de hachage moderne
+        // qui n'a pas besoin de sel explicite
+        return null;
+    }
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
     public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): static
@@ -231,4 +250,12 @@ class User implements PasswordAuthenticatedUserInterface {
 
         return $this;
     }
+    public function getUsername(): string {
+    // Utilisez l'email comme nom d'utilisateur pour l'authentification
+    return $this->email;
+}
+
+public function eraseCredentials(): void {
+    // Nettoyez ici les données sensibles temporaires
+}
 }
