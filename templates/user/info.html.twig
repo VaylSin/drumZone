@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{user.firstName}} {% endblock %}
+
+{% block body %}
+<div class="container d-flex">
+    <div class="col-lg-4 order-lg-1 text-start">
+        <img src="//placehold.it/150" class="mx-auto img-fluid rounded-circle d-block" alt="avatar">
+        <h6 class="mt-2">Changer d'avatar</h6>
+        <label class="custom-file">
+            <input type="file" id="file" class="custom-file-input">
+            <p class="custom-file-label">Choisissez un fichier</p>
+        </label>
+    </div>
+    <div class="col-lg-8 order-lg-2">
+        <div class="tab-content py-4">
+            <div class="tab-pane fade show active" id="profile">
+                <h5 class="mb-3">{{ user.firstName ~ ' ' ~ user.lastName}}</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Email</h6>
+                        <p>{{ user.email }}</p>
+                        <h6>Téléphone</h6>
+                        <p>{{ user.phoneNumber }}</p>
+                        <h6>Adresse</h6>
+                        <p>{{ user.billingAdress }}</p>
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">Modifier votre profil</a>
+                            <a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
+                                    </div>
+                <div class="col-md-12">
+                    <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-end"></span> Mes Commandes</h5>
+                    <ul>
+                        {% if user.orders is not empty %}
+                            {% for order in user.orders %}
+                            {{ dump(order) }}
+                                <li>
+                                    <a class="text-decoration-none" href="{{ path('order.show', {'id': order.id}) }}">
+                                        Commande N°{{ order.id }} - {{ order.date|date('d/m/Y') }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <p>Vous n'avez pas de commandes.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+                    <div class="col-md-12">
+                        <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-end"></span> Historique des commandes</h5>
+                        {# <div class="accordion accordion-flush" id="accordion">
+                            {% for reservation in user.reservations %}
+                            {% set collapseId = 'collapse' ~ loop.index %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ loop.index }}">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#{{ collapseId }}"
+                                        aria-expanded="{{ loop.first ? 'true' : 'false' }}"
+                                        aria-controls="{{ collapseId }}">
+                                        Le {{ reservation.createdAt|date('Y-m-d') }} -
+                                        <strong>{{reservation.conference.titre}}</strong>
+                                    </button>
+                                </h2>
+                                <div id="{{ collapseId }}" class="accordion-collapse collapse "
+                                    aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordion">
+                                    <div class="accordion-body">
+                                        {% for commentaire in reservation.conference.commentaires %}
+                                        <h5> Le {{ commentaire.publishedAt|date('Y-m-d') }}</h5>
+                                        <p><em>{{ commentaire.contenu }}</em></p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div> #}
+                    </div>
+                </div>
+                <!--/row-->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

@@ -5,8 +5,9 @@
 
 
 header {
-    background-image: url('/uploads/images/header_banner.jpg');
-    padding: 5rem 0;
+    /* background-image: url('/uploads/images/header_banner.jpg'); */
+    background-image: url('/uploads/images/thumbnail.jpg');
+    padding: 10rem 0;
     background-position: top;
     background-size: cover;
     .form-control:focus {

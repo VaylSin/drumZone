@@ -5,7 +5,7 @@
             <ul class="list-group list-group-flush my-4">
                 {% for item in bestRateLinks %}
                     {{  include('menu/components/sidebar_link_element.html.twig',
-                            {'item': item, 'path': 'app_category_show' }
+                            {'item': item, 'path': 'app_product_show' }
                     )}}
 
                 {% endfor %}
@@ -20,7 +20,6 @@
             {{
                 include('home/components/product-card.html.twig',
                     {'item': item, 'count': count})
-
             }}
         {% endfor %}
     </div>

@@ -75,4 +75,10 @@ class Category
 
         return $this;
     }
+       // Autres propriétés et méthodes...
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

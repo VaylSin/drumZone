@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeImmutable;
+
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product {
@@ -42,9 +44,10 @@ class Product {
     #[ORM\Column(nullable: true)]
     private ?bool $lightOn = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id", nullable: false)]
+
+    private $category;
 
     /**
      * @var Collection<int, Tag>
@@ -81,6 +84,11 @@ class Product {
         $this->tags = new ArrayCollection();
         $this->image = new ArrayCollection();
         $this->testimonials = new ArrayCollection();
+        $this->isActive = true; // Définir isActive à true par défaut
+        $this->createdAt = new DateTimeImmutable(); // Initialise createdAt avec la date et l'heure actuelles
+        $this->updatedAt = new DateTimeImmutable(); // Initialise updatedAt avec la date et l'heure actuelles
+
+
     }
 
     public function getId(): ?int
@@ -147,13 +155,17 @@ class Product {
 
         return $this;
     }
+public function getIsActive(): bool
+{
+    return $this->isActive;
+}
+public function isActiveOnDate(\DateTime $date): bool
+{
+    // Implémentez la logique ici pour vérifier si le produit est actif à la date spécifiée
+    return true; // Exemple de retour
+}
 
-    public function isActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function setActive(bool $isActive): static
+    public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
 

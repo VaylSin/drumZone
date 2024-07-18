@@ -7,8 +7,8 @@
         </ul>
         <ul class="nav">
             <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Blog</a></li>
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About us</a></li>
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Carreers</a></li>
+            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About purr</a></li>
+            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Catreers</a></li>
         </ul>
     </div>
 </nav>
@@ -17,16 +17,16 @@
         <div class="row align-items-center w-100">
             <div class="col-md-3">
                 <a href="/" class="d-flex  mb-3 mb-lg-0 text-dark text-decoration-none">
-                    <span class="text-light fs-2 fw-bold ">DrumZone</span>
+                    <span class="text-light fs-2 fw-bold ">CatZone</span>
                 </a></div>
             <div class="d-flex col-md-6">
                 <div class="col-auto">
-                    <button class="btn btn-outline-success dropdown-toggle border-end-0 rounded-0 rounded-start"
+                    <button class="btn btn-success dropdown-toggle border-end-0 rounded-0 rounded-start text-light"
                         type="button" data-bs-toggle="dropdown" aria-expanded="false">Catégories</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="#">Something to put down</a></li>
                     </ul>
                 </div>
                 <div class="col">
@@ -40,8 +40,14 @@
                 </div>
             </div>
             <div class="col-md-3 text-end text-light d-flex justify-content-end">
-                <a href="" class="text-decoration-none text-light d-flex align-items-center">Se connecter<i class="bi bi-person text-dark fw-bold"></i></a>
-                <a href="{{ path('app_cart') }}"><i class="bi bi-bag text-dark fw-bold"></i></a>
+                {% if app.user %}
+                    <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="text-decoration-none text-light d-flex align-items-center">{{app.user.firstname ~' '~ app.user.lastname}} <i class="bi bi-person text-dark fw-bold"></i></a>
+                    <a href="{{ path('app_cart') }}"><i class="bi bi-bag text-dark fw-bold"></i></a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="text-decoration-none text-light d-flex align-items-center">Se connecter<i class="bi bi-person text-dark fw-bold"></i></a>
+                    <a href="{{ path('app_login') }}"><i class="bi bi-bag text-dark fw-bold"></i></a>
+                {% endif %}
+
             </div>
         </div>
     </div>

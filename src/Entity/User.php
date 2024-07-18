@@ -62,6 +62,13 @@ class User implements UserInterface,  PasswordAuthenticatedUserInterface {
     #[ORM\OneToMany(targetEntity: Testimonial::class, mappedBy: 'user')]
     private Collection $testimonials;
 
+    /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
+    private Collection $orders;
+
+
     public function __construct()
     {
         $this->roles = ['ROLE_USER'];
@@ -69,6 +76,7 @@ class User implements UserInterface,  PasswordAuthenticatedUserInterface {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->testimonials = new ArrayCollection();
+        $this->orders = new ArrayCollection();
 
     }
 
@@ -258,4 +266,40 @@ class User implements UserInterface,  PasswordAuthenticatedUserInterface {
 public function eraseCredentials(): void {
     // Nettoyez ici les données sensibles temporaires
 }
+
+/**
+ * @return Collection<int, Order>
+ */
+public function getOrders(): Collection
+{
+    return $this->orders;
+}
+
+public function addOrder(Order $order): static
+{
+    if (!$this->orders->contains($order)) {
+        $this->orders->add($order);
+        $order->setUser($this);
+    }
+
+    return $this;
+}
+
+public function removeOrder(Order $order): static
+{
+    if ($this->orders->removeElement($order)) {
+        // set the owning side to null (unless already changed)
+        if ($order->getUser() === $this) {
+            $order->setUser(null);
+        }
+    }
+
+    return $this;
+}
+
+
+
+
+
+
 }

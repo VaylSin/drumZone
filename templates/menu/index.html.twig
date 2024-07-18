@@ -14,7 +14,7 @@
                 {% if category.products|default([]) is not empty %}
                 <ul class="dropdown-menu bg-secondary " aria-labelledby="navbarDropdownMenuLink{{ category.id }}">
                     {% for product in category.products %}
-                    <li><a class="dropdown-item"
+                    <li><a class="dropdown-item text-light"
                             href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
                     {% endfor %}
                 </ul>
